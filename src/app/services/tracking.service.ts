@@ -8,7 +8,7 @@ import { Tracking } from '../models/tracking.model';  // Importer le modèle Tra
 })
 export class TrackingService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   // Méthode pour récupérer tous les pointages
   getAllTrackings(): Observable<Tracking[]> {
