@@ -8,7 +8,7 @@ import { LeaveRequest } from '../models/leave-request.model';  //Import de model
 })
 export class LeaveRequestService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   // Méthode pour soumettre une demande de congé
   submitLeaveRequest(leaveRequest: LeaveRequest): Observable<LeaveRequest> {
