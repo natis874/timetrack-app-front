@@ -9,7 +9,7 @@ import { User } from '../models/user.model';  // Importer le modèle User
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly  http: HttpClient) {}
 
   // Méthode pour se connecter
   login(username: string, password: string): Observable<User> {
