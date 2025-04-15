@@ -8,7 +8,7 @@ import { Planning } from '../models/planning.model';  // Importer le modèle Pla
 })
 export class PlanningService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   // Méthode pour obtenir les plannings
   getAllPlannings(): Observable<Planning[]> {
