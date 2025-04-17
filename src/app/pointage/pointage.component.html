@@ -1,1 +1,27 @@
-<p>pointage works!</p>
+<div class="pointage-container">
+    <h3>Pointage</h3>
+    
+    <div>
+      <label for="entryTime">Entrée</label>
+      <input type="datetime-local" [(ngModel)]="entryTime" id="entryTime">
+    </div>
+    
+    <div>
+      <label for="exitTime">Sortie</label>
+      <input type="datetime-local" [(ngModel)]="exitTime" id="exitTime">
+    </div>
+    
+    <button (click)="addPointage()">Enregistrer le pointage</button>
+  
+    <h4>Liste des pointages</h4>
+    <ul>
+      <li *ngFor="let pointage of pointages">
+        <p>Id: {{ pointage.id }}</p>
+        <p>Entrée: {{ pointage.entryTime }}</p>
+        <p>Sortie: {{ pointage.exitTime }}</p>
+        <p>Heures travaillées: {{ pointage.totalHours }} h</p>
+      </li>
+    </ul>
+  </div>
+  
+  
