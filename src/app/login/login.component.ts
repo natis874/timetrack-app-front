@@ -1,30 +1,58 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Ajout de FormGroup
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { User } from '../models/user.model';  // Importer le modèle User
+import { LoginService } from '../core/services/login.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+interface Login {
+  email: string;
+  password: string;
+}
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrl:'./login.component.css'
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  errorMessage: string = '';
+  private fb: FormBuilder;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  loginForm: FormGroup; // Déclarez la variable de type FormGroup
 
-  login() {
-    this.authService.login(this.username, this.password).subscribe({
-      next: (user) => {
-        if (user) {
-          this.router.navigate(['/dashboard']);
+  errorMessage = '';
+
+  constructor(
+    fb: FormBuilder, // Injection via constructeur
+    private loginService: LoginService,
+    private router: Router
+  ) {
+    this.fb = fb;
+
+    // Initialisation du formulaire avec FormGroup
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
+  }
+
+  onSubmit() {
+    if (this.loginForm.invalid) return;
+
+    const loginData: Login = this.loginForm.value;
+
+    this.loginService.login(loginData).subscribe({
+      next: (res) => {
+        if (res.role === 'USER') {
+          this.router.navigate(['/pointage']); // <- ici
+        } else if (res.role === 'MANAGER') {
+          this.router.navigate(['/pointage']);
         }
       },
-      error: (err) => {
-        this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect';
-      }
+      error: () => (this.errorMessage = 'Identifiants invalides')
     });
   }
 }
+
