@@ -1,58 +1,38 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Ajout de FormGroup
 import { Router } from '@angular/router';
-import { LoginService } from '../core/services/login.service';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../core/services/login.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
-interface Login {
-  email: string;
-  password: string;
-}
 
 @Component({
-  selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './login.component.html',
-  styleUrl:'./login.component.css'
+  selector: 'app-login',
+  imports: [CommonModule, FormsModule],
+  template: `
+    <div class="login-container">
+      <h2>Connexion</h2>
+      <form (ngSubmit)="onLogin()">
+        <input [(ngModel)]="email" name="email" placeholder="Email" required />
+        <input [(ngModel)]="password" name="password" type="password" placeholder="Mot de passe" required />
+        <button type="submit">Se connecter</button>
+        <p *ngIf="errorMessage">{{ errorMessage }}</p>
+      </form>
+    </div>
+  `,
+  styles: [`.login-container { padding: 2rem; max-width: 300px; margin: auto; display: flex; flex-direction: column; gap: 1rem; }`]
 })
 export class LoginComponent {
-  private fb: FormBuilder;
-
-  loginForm: FormGroup; // Déclarez la variable de type FormGroup
-
+  email = '';
+  password = '';
   errorMessage = '';
 
-  constructor(
-    fb: FormBuilder, // Injection via constructeur
-    private loginService: LoginService,
-    private router: Router
-  ) {
-    this.fb = fb;
+  constructor(private auth: AuthService, private router: Router) {}
 
-    // Initialisation du formulaire avec FormGroup
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-    });
-  }
-
-  onSubmit() {
-    if (this.loginForm.invalid) return;
-
-    const loginData: Login = this.loginForm.value;
-
-    this.loginService.login(loginData).subscribe({
-      next: (res) => {
-        if (res.role === 'USER') {
-          this.router.navigate(['/pointage']); // <- ici
-        } else if (res.role === 'MANAGER') {
-          this.router.navigate(['/pointage']);
-        }
-      },
-      error: () => (this.errorMessage = 'Identifiants invalides')
-    });
+  onLogin() {
+    if (this.auth.login(this.email, this.password)) {
+      this.router.navigate(['/pointage']);
+    } else {
+      this.errorMessage = 'Identifiants incorrects';
+    }
   }
 }
-
