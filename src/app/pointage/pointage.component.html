@@ -1,6 +1,30 @@
 <div class="pointage-container">
     <h3>Pointage</h3>
-    
+    <div>
+      <button (click)="onDemandeConge()">Faire une demande de congé</button>
+    </div>
+
+  <!-- Si l'utilisateur clique sur "Faire une demande de congé", afficher le formulaire -->
+  <div *ngIf="showDemandeCongeForm">
+    <h3>Demander un congé</h3>
+    <form [formGroup]="demandeForm" (ngSubmit)="onSubmitDemande()">
+      <div>
+        <label for="debut">Date de début</label>
+        <input id="debut" type="date" formControlName="debut" />
+      </div>
+      <div>
+        <label for="fin">Date de fin</label>
+        <input id="fin" type="date" formControlName="fin" />
+      </div>
+      <div>
+        <label for="commentaire">Commentaire</label>
+        <textarea id="commentaire" formControlName="commentaire"></textarea>
+      </div>
+      <button type="submit" [disabled]="demandeForm.invalid">Envoyer la demande</button>
+    </form>
+  </div>
+</div>
+
     <div>
       <label for="entryTime">Entrée</label>
       <input type="datetime-local" [(ngModel)]="entryTime" id="entryTime">
