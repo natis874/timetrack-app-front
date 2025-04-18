@@ -1,4 +1,90 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* Typo et base */
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: #f9fafb;
+    margin: 0;
+    padding: 0;
+    color: #1f2937;
+  }
+  
+  /* Container générique */
+  .container {
+    max-width: 500px;
+    margin: 5rem auto;
+    background-color: #ffffff;
+    padding: 2.5rem 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Titres */
+  h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  /* Label + Input */
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+    margin-bottom: 1.2rem;
+    transition: border 0.2s ease-in-out;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+  
+  /* Boutons */
+  button {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: #2563eb;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    margin-top: 1rem;
+  }
+  
+  button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  /* Secondaires */
+  button.secondary {
+    background-color: #e5e7eb;
+    color: #1f2937;
+  }
+  
+  button.secondary:hover {
+    background-color: #d1d5db;
+  }
+  
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+    font-family: 'Segoe UI', Roboto, "Helvetica Neue", sans-serif;
+    background-color: #f9fafb;
+    margin: 0;
+    padding: 0;
+    color: #1f2937;
+  }
