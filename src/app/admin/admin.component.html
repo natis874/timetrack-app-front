@@ -1,0 +1,9 @@
+<div class="admin-container">
+    <h2>Page Admin</h2>
+    <div *ngIf="isAdmin">
+      <p>Bienvenue, admin ! Vous pouvez gérer les utilisateurs ici.</p>
+    </div>
+    <div *ngIf="!isAdmin">
+      <p>Accès interdit, vous devez être un admin pour accéder à cette page.</p>
+    </div>
+  </div>
