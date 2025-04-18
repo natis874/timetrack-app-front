@@ -1,56 +1,44 @@
-
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { AuthResponse, Login } from '../models/login.model';
-import { of, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { User,UserRole } from '../models/user.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  private currentUser: User | null = null;
 
-export class LoginService {
-  private tokenKey = 'auth_token';
-  private currentUserRole = new BehaviorSubject<'USER' | 'MANAGER' | null>(null);
+  constructor(private router: Router) {}
 
-  constructor(private http: HttpClient) {}
-
-  login(loginData: Login): Observable<AuthResponse> {
-    if (loginData.email === 'user@test.com' && loginData.password === '123456') {
-      const token = 'fake-user-token';
-      const response: AuthResponse = { token, userId: 1, role: 'USER' };
-      this.setSession(response);
-      return of(response);
-    } else if (loginData.email === 'manager@test.com' && loginData.password === 'admin123') {
-      const token = 'fake-manager-token';
-      const response: AuthResponse = { token, userId: 2, role: 'MANAGER' };
-      this.setSession(response);
-      return of(response);
-    } else {
-      return throwError(() => new Error('Invalid credentials'));
+  login(email: string, password: string): boolean {
+    // Pour le test, on détermine le rôle en fonction de l'email
+    if (email === 'manager@test.com' && password === '1234') {
+      this.currentUser = { id: 1, email,password:'password', role: 'manager' };
+      return true;
     }
-  }
-  
-  private setSession(auth: AuthResponse) {
-    localStorage.setItem(this.tokenKey, auth.token);
-    localStorage.setItem('user_role', auth.role);
-    this.currentUserRole.next(auth.role);
-  }
-  
 
-  logout() {
-    localStorage.removeItem(this.tokenKey);
-    this.currentUserRole.next(null);
+    if (email === 'user@test.com' && password === '1234') {
+      this.currentUser = { id: 2,password:'password', email, role: 'user' };
+      return true;
+    }
+
+    return false;
   }
 
-  getRole(): Observable<'USER' | 'MANAGER' | null> {
-    return this.currentUserRole.asObservable();
+  logout(): void {
+    this.currentUser = null;
+    this.router.navigate(['/']);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+  isAuthenticated(): boolean {
+    return this.currentUser !== null;
   }
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+  getCurrentUser(): User | null {
+    return this.currentUser;
+  }
+
+  getUserRole(): UserRole | null {
+    return this.currentUser?.role || null;
   }
 }
